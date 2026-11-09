@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meeting Meter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <svg class="mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="#14213D"/>
+      <path d="M7 21a9 9 0 0 1 18 0" fill="none" stroke="#F5A524" stroke-width="2.4" stroke-linecap="round" opacity=".45"/>
+      <path d="M16 21l5-7" stroke="#F5A524" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="16" cy="21" r="2" fill="#F5A524"/>
+    </svg>
+    <h1>Meeting Meter</h1>
+    <span id="supporter" class="badge" hidden>Supporter ❤</span>
+  </header>
+
+  <section id="banner" class="banner" hidden>
+    <button id="banner-close" class="x" type="button" aria-label="Not now">×</button>
+    <p id="banner-text"></p>
+    <div id="banner-buttons" class="donate-row"></div>
+    <div class="banner-foot">
+      <button id="banner-dismiss" class="small-link" type="button">Not now</button>
+      <button id="banner-never" class="small-link" type="button">Don't ask again</button>
+    </div>
+  </section>
+
+  <section class="hero" aria-labelledby="heroLabel">
+    <div id="heroLabel" class="label">This week</div>
+    <div id="total" class="big">–</div>
+    <div id="summary" class="summary"></div>
+    <div id="currencyNote" class="cur-note" hidden></div>
+    <div id="live" class="live" hidden>
+      <span class="dot" aria-hidden="true"></span>
+      <span id="liveText"></span>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="topLabel">
+    <h2 id="topLabel">Most expensive meeting this week</h2>
+    <div id="topBox" hidden>
+      <div id="topCost" class="top-cost"></div>
+      <div id="topMeta" class="meta"></div>
+      <div id="topTitle" class="title" hidden></div>
+    </div>
+    <div id="empty" class="empty">
+      <svg viewBox="0 0 64 64" width="52" height="52" aria-hidden="true">
+        <circle cx="32" cy="32" r="28" class="empty-bg"/>
+        <path d="M16 40a16 16 0 0 1 32 0" fill="none" class="empty-arc" stroke-width="3" stroke-linecap="round"/>
+        <path d="M32 40l9-12" class="empty-arc" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="32" cy="40" r="3" class="empty-dot"/>
+      </svg>
+      <p>No meetings yet this week. Meeting Meter starts counting automatically when you join a call in Google Meet.</p>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <button id="optionsLink" class="link" type="button">Options</button>
+  </footer>
+
+  <script src="lib/validate.js"></script>
+  <script src="lib/meter.js"></script>
+  <script src="lib/donation.js"></script>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

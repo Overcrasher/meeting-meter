@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy – Meeting Meter</title>
+<style>
+:root{color-scheme:light dark;--bg:#faf7f0;--surface:#fff;--line:#e8e2d4;--fg:#1e293b;--muted:#334155;--navy:#14213d;--amber:#f5a524;--amber-ink:#8a5a00;--link:#14213d;--shadow:0 1px 2px rgba(20,33,61,.06),0 8px 30px rgba(20,33,61,.08)}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1730;--surface:#14213d;--line:#2a3a5e;--fg:#f1ede3;--muted:#c3cadb;--amber-ink:#f5a524;--link:#f5a524;--shadow:0 8px 30px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--link)}a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+main{max-width:720px;margin:0 auto;padding:40px 16px 24px}
+h1{margin:12px 0 4px;font-size:38px;line-height:1.15;letter-spacing:-.02em}h2{margin:36px 0 10px;font-size:23px}
+p,li{color:var(--muted)}
+.hero{background:var(--navy);color:#faf7f0;border-radius:24px;padding:40px 24px;text-align:center;box-shadow:var(--shadow)}
+.hero h1{color:#faf7f0}.hero p{color:#cdd3e2;max-width:540px;margin:8px auto}
+.tag{font-size:20px;color:var(--amber)!important;font-weight:600}
+.money{font-variant-numeric:tabular-nums;color:var(--amber);font-size:34px;font-weight:700;margin:16px 0 0!important}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;box-shadow:var(--shadow);margin:0 0 12px}
+.card strong{display:block;color:var(--fg)}
+footer{max-width:720px;margin:0 auto;padding:16px 16px 48px;border-top:1px solid var(--line);font-size:14px;text-align:center}footer a{margin:0 8px;display:inline-block}
+</style>
+</head>
+<body>
+<main>
+<h1>Privacy Policy – Meeting Meter</h1>
+<p><strong>No data leaves your device.</strong></p>
+<p>Meeting Meter stores everything (your settings, meeting history and donation state) in your browser's local extension storage (<code>chrome.storage.local</code>) on your device.</p>
+<h2>What the extension reads</h2>
+<ul>
+<li>On <code>meet.google.com</code>: whether you are in a call, and the number of participants. This is used</li>
+<p>to show the running cost ticker while you are in a call.</p>
+<li>On <code>calendar.google.com</code>: the time range and the number of guests of an event, only while an</li>
+<p>event details panel is open, to show an estimated cost.</p>
+</ul>
+<h2>What it stores (on your device only)</h2>
+<ul>
+<li>Meeting start and end times, duration, participant counts, and the computed cost.</li>
+<li>The Meet meeting code (for example <code>abc-defg-hij</code>), used to resume a meeting after a short disconnect.</li>
+<li>Meeting titles, only if you turn on "Store meeting titles" in Options (off by default).</li>
+<li>Your settings (salary, currency, ticker position and similar) and donation state.</li>
+</ul>
+<h2>What it does not do</h2>
+<ul>
+<li>No analytics, no tracking, no ads, no accounts.</li>
+<li>Nothing is sent to any server. The extension makes no network requests of its own.</li>
+<li>It does not read or store the content of calls, chats or event descriptions, and it does not record audio or video.</li>
+</ul>
+<h2>Donations</h2>
+<p>Donation links open in a normal browser tab, at your request. Payments are handled entirely by Stripe on its own checkout page, a separate site; the extension never sees payment details. The optional thank-you page (hosted on GitHub Pages, so visiting it contacts GitHub) only lets the extension learn that a checkout completed: it sets a "supporter" flag stored on your device.</p>
+<h2>Permissions</h2>
+<ul>
+<li><code>storage</code>: keeps your settings and history on your device.</li>
+<li>Access to <code>meet.google.com</code> and <code>calendar.google.com</code>: needed to show the ticker and the cost</li>
+<p>estimate on those pages. No other sites are accessed.</p>
+</ul>
+<p>You can erase your history in Options ("Clear meeting history") or all data by removing the extension.</p>
+<p>Questions: open an issue on the project's GitHub page, <a href="https://github.com/Overcrasher/meeting-meter/issues">https://github.com/Overcrasher/meeting-meter/issues</a></p>
+<p><a href="./">Back to Meeting Meter</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meeting Meter options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="top">
+      <svg class="mark" viewBox="0 0 32 32" width="34" height="34" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#14213D"/>
+        <path d="M7 21a9 9 0 0 1 18 0" fill="none" stroke="#F5A524" stroke-width="2.4" stroke-linecap="round" opacity=".45"/>
+        <path d="M16 21l5-7" stroke="#F5A524" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="16" cy="21" r="2" fill="#F5A524"/>
+      </svg>
+      <h1>Meeting Meter</h1>
+      <span id="saved" class="saved" role="status" aria-live="polite">Saved</span>
+    </header>
+
+    <section class="card">
+      <h2>Salary</h2>
+      <div class="field">
+        <label for="salary">Yearly salary</label>
+        <div class="inline">
+          <input id="salary" type="number" min="1" max="10000000" step="any" inputmode="decimal" aria-describedby="rate salaryErr">
+          <select id="currency" aria-label="Currency"></select>
+        </div>
+        <p id="rate" class="hint" aria-live="polite"></p>
+        <p id="salaryErr" class="err" role="alert"></p>
+      </div>
+      <p class="hint">Used to estimate the cost of every person-hour: salary ÷ 2000 hours per year.</p>
+    </section>
+
+    <section class="card">
+      <h2>Ticker in Google Meet</h2>
+      <label class="switch"><input id="meetEnabled" type="checkbox" role="switch"><span class="track" aria-hidden="true"></span><span class="switch-text">Show the ticker in Google Meet</span></label>
+      <fieldset class="corners">
+        <legend>Ticker position</legend>
+        <div class="grid">
+          <label class="corner tl"><input type="radio" name="corner" value="top-left"><span>Top left</span></label>
+          <label class="corner tr"><input type="radio" name="corner" value="top-right"><span>Top right</span></label>
+          <label class="corner bl"><input type="radio" name="corner" value="bottom-left"><span>Bottom left</span></label>
+          <label class="corner br"><input type="radio" name="corner" value="bottom-right"><span>Bottom right</span></label>
+        </div>
+        <button id="resetPos" type="button" class="secondary">Reset dragged position</button>
+      </fieldset>
+      <div class="field">
+        <label for="minParticipants">Hide the ticker when fewer than N people</label>
+        <input id="minParticipants" type="number" min="1" max="50" step="1" class="narrow" aria-describedby="minErr">
+        <p id="minErr" class="err" role="alert"></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Google Calendar and history</h2>
+      <label class="switch"><input id="calendarEnabled" type="checkbox" role="switch"><span class="track" aria-hidden="true"></span><span class="switch-text">Show the estimate in Google Calendar</span></label>
+      <label class="switch"><input id="storeTitles" type="checkbox" role="switch"><span class="track" aria-hidden="true"></span><span class="switch-text">Store meeting titles</span></label>
+      <p class="hint indent">Titles stay on this device. They are never sent anywhere.</p>
+      <div class="danger-row">
+        <button id="clear" type="button" class="secondary danger">Clear meeting history</button>
+        <span id="clearNote" class="hint" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section class="card quiet">
+      <h2>Privacy</h2>
+      <p class="hint">Everything stays on this device. No accounts, no analytics, no servers.</p>
+    </section>
+
+    <section class="card quiet">
+      <h2>Support this project</h2>
+      <p id="thanks" class="thanks" hidden>Thank you for supporting Meeting Meter ❤</p>
+      <p class="hint">Built by one developer, no ads, no tracking. If it helped, a coffee keeps it going.</p>
+      <div id="donate" class="donate-row"></div>
+      <p id="donate-note" class="hint"></p>
+    </section>
+  </main>
+
+  <script src="lib/validate.js"></script>
+  <script src="lib/meter.js"></script>
+  <script src="lib/donation.js"></script>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

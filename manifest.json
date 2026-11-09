@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Meeting Meter",
+  "version": "1.0.0",
+  "description": "A live cost ticker for Google Meet calls and cost estimates in Google Calendar. See what your meetings really cost.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://meet.google.com/*", "https://calendar.google.com/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {"matches": ["https://meet.google.com/*"], "js": ["selectors.js", "lib/meter.js", "meet.js"], "run_at": "document_idle"},
+    {"matches": ["https://calendar.google.com/*"], "js": ["selectors.js", "lib/meter.js", "calendar.js"], "run_at": "document_idle"},
+    {"matches": ["https://overcrasher.github.io/meeting-meter/thanks.html?session_id=*"], "js": ["thanks.js"], "run_at": "document_idle"}
+  ],
+  "action": {
+    "default_title": "Meeting Meter",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+  }
+}
