@@ -44,8 +44,8 @@
   }
 
   // ---------- injected line ----------
-  const HOST_STYLE = "display: block !important; position: static !important; float: none !important; margin: 4px 0 !important; " +
-    "padding: 0 !important; width: auto !important; height: auto !important; max-height: none !important; overflow: visible !important; " +
+  const HOST_STYLE = "display: block !important; position: static !important; float: none !important; margin: 4px 0 0 0 !important; " +
+    "padding: 0 !important; width: 100% !important; box-sizing: border-box !important; flex: none !important; font-size: 13px !important; height: auto !important; max-height: none !important; overflow: visible !important; " +
     "opacity: 1 !important; visibility: visible !important; transform: none !important; background: none !important; border: 0 !important;";
   const CSS = `
     .line { display: flex; align-items: baseline; gap: 8px; font: inherit; color: inherit; line-height: 1.4; }
@@ -90,20 +90,42 @@
     return h + " h" + (m ? " " + m + " min" : "");
   }
 
-  function show(anchor, cost, guests, minutes) {
+  const isFlexRowOrGrid = (el) => {
+    try {
+      const cs = getComputedStyle(el), d = cs.display;
+      if (/grid/.test(d)) return true;
+      return /flex/.test(d) && /^row/.test(cs.flexDirection || "row");
+    } catch (e) { return false; }
+  };
+  // Where the line goes so it is never a flex/grid item beside the time text: after the nearest block-level
+  // ancestor-or-self of the deepest time element, unless that element's parent is a flex row / grid, in which
+  // case it becomes the last child inside that element.
+  function placement(deepest, dlg) {
+    let el = deepest;
+    try {
+      while (el !== dlg && el.parentElement && /^inline/.test(getComputedStyle(el).display) && !/flex|grid/.test(getComputedStyle(el).display)) el = el.parentElement;
+    } catch (e) { /* keep el */ }
+    const parent = el.parentElement;
+    return { anchor: el, inside: !parent || el === dlg || isFlexRowOrGrid(parent) };
+  }
+  const isPlaced = (cur, anchor, inside) => cur && cur.host.isConnected && cur.anchor === anchor && cur.inside === inside &&
+    (inside ? cur.host.parentNode === anchor && anchor.lastChild === cur.host : anchor.nextSibling === cur.host);
+
+  function show(deepest, dlg, cost, guests, minutes) {
     const key = [cost.toFixed(4), guests, minutes, settings.currency].join("|");
-    const intact = current && current.host.isConnected && current.anchor === anchor && anchor.nextSibling === current.host;
+    const pl = placement(deepest, dlg);
+    const intact = isPlaced(current, pl.anchor, pl.inside);
     if (intact && current.key === key) return;
     if (!intact) {
       removeLine();
       const b = buildLine();
-      current = { host: b.host, anchor, key: "", money: b.money, muted: b.muted };
-      anchor.insertAdjacentElement("afterend", b.host);
+      current = { host: b.host, anchor: pl.anchor, inside: pl.inside, key: "", money: b.money, muted: b.muted };
+      if (pl.inside) pl.anchor.appendChild(b.host); else pl.anchor.insertAdjacentElement("afterend", b.host);
     }
     current.key = key;
     current.host.style.cssText = HOST_STYLE;
     current.money.textContent = "Estimated cost: " + C.formatMoney(cost, settings.currency, cost >= 100);
-    current.muted.textContent = " · " + guests + (guests === 1 ? " person" : " people") + " × " + duration(minutes);
+    current.muted.textContent = " \u00b7 " + guests + (guests === 1 ? " person" : " people") + " \u00d7 " + duration(minutes);
   }
 
   // ---------- scan ----------
@@ -127,7 +149,7 @@
       const minutes = range.endMin - range.startMin;
       if (!(minutes > 0)) { removeLine(); return; }
       const guests = Math.max(1, S.calendar.guestCount(found.dialog) || 1);
-      show(found.time.el, C.calendarCost(guests, minutes, rate), guests, minutes);
+      show(found.time.deepest || found.time.el, found.dialog, C.calendarCost(guests, minutes, rate), guests, minutes);
     } catch (e) { /* never throw */ }
   }
 

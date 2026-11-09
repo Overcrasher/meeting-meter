@@ -192,7 +192,7 @@
         if (!p || p === dlg || !dlg.contains(p) || (p.textContent || "").length > 100) break;
         el = p;
       }
-      return { el, text: normalizeTimeText(el.textContent) };
+      return { el, deepest: best, text: normalizeTimeText(el.textContent) };
     } catch (e) { return null; }
   }
 
