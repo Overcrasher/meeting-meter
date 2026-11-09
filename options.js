@@ -100,7 +100,7 @@ async function init() {
   });
 
   $("thanks").hidden = !state.supporter;
-  const shown = renderDonateButtons($("donate"));
+  const shown = renderDonateButtons($("donate"), $("donate-note"));
   if (!shown) $("donate-note").textContent = "Donation links not configured yet";
 }
 init();

@@ -71,14 +71,18 @@ If the repo or username changes, update `THANKS_URL` in `config.js`, the thanks 
 
 ## Stripe setup
 
-Create 3 Payment Links in Stripe (EUR; optionally again in USD for `DONATE_LINKS_USD`). Stripe may issue them on
+Create 4 Payment Links in Stripe (EUR; optionally again in USD for `DONATE_LINKS_USD`). Stripe may issue them on
 `buy.stripe.com` or `donate.stripe.com`; both are accepted.
 
-| Key | Fixed price | Button |
-|-----|-------------|--------|
-| `small` | 3 | "3" |
-| `medium` | 5 | "5" (emphasized) |
-| `large` | 15 | "Buy the team a coffee" |
+The `custom` link is a 1 (EUR or USD) one-time product with **Let customers adjust quantity** enabled (min 1, max 100):
+the donor sets quantity N on Stripe's page to pay N.
+
+| Key | Type | Button |
+|-----|------|--------|
+| `small` | fixed price, 3 | "3" |
+| `medium` | fixed price, 5 | "5" (emphasized) |
+| `large` | fixed price, 10 | "10" |
+| `custom` | 1 one-time product, adjustable quantity | "Pick your own amount" |
 
 For every link, under **After payment** choose *Don't show confirmation page* and set the redirect to:
 
@@ -110,7 +114,7 @@ Meeting Meter is a convenience tool, not a security control.
 
 ## Before publishing
 
-1. Fill the three EUR links in `config.js`.
+1. Fill the four EUR links in `config.js`.
 2. `python3 tools/check_release.py --release` (without `--release` the emptiness check is skipped). It fails on non-Stripe
    links, `test_` / `TODO` / `PLACEHOLDER`, a wrong `THANKS_URL`, a missing manifest thanks match, or a thanks URL missing
    from `lib/validate.js`.

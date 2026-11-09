@@ -179,10 +179,12 @@ eq("supporter never", D.pickAsk(Object.assign(fresh(), { supporter: true }), 600
 eq("dontAskAgain never", D.pickAsk(Object.assign(fresh(), { dontAskAgain: true }), 600, T0), null);
 eq("pickAsk null state", D.pickAsk(null, 10, T0), 10);
 eq("applyAsk keeps other fields", D.applyAsk({ dontAskAgain: false, asked: [], lastAskAt: 0, x: 1 }, 10, 5).x, 1);
-eq("keys", D.availableKeys({ small: "a", medium: "", large: "c", custom: "d" }), ["small", "large"]);
-eq("keys none", D.availableKeys({ small: "", medium: "", large: "" }), []);
+eq("keys", D.availableKeys({ small: "a", medium: "", large: "c", custom: "d" }), ["small", "large", "custom"]);
+eq("keys custom only", D.availableKeys({ small: "", medium: "", large: "", custom: "d" }), ["custom"]);
+eq("keys all", D.availableKeys({ small: "a", medium: "b", large: "c", custom: "d" }), ["small", "medium", "large", "custom"]);
+eq("keys none", D.availableKeys({ small: "", medium: "", large: "", custom: "" }), []);
 eq("keys null", D.availableKeys(null), []);
-eq("hasAnyLink no", D.hasAnyLink({ small: "", medium: "", large: "" }), false);
+eq("hasAnyLink no", D.hasAnyLink({ small: "", medium: "", large: "", custom: "" }), false);
 eq("hasAnyLink yes", D.hasAnyLink({ small: "", medium: "x", large: "" }), true);
 eq("usd en-US", D.isUsdLocale("en-US"), true);
 eq("usd es-US", D.isUsdLocale("es-US"), true);
@@ -193,11 +195,12 @@ eq("usd en-GB", D.isUsdLocale("en-GB"), false);
 eq("usd en", D.isUsdLocale("en"), false);
 eq("usd ro-RO", D.isUsdLocale("ro-RO"), false);
 eq("usd non-string", D.isUsdLocale(undefined), false);
-const EUR = { small: "e1", medium: "e2", large: "e3" };
-const USD = { small: "u1", medium: "u2", large: "u3" };
+const EUR = { small: "e1", medium: "e2", large: "e3", custom: "e4" };
+const USD = { small: "u1", medium: "u2", large: "u3", custom: "u4" };
 eq("select usd", D.selectLinks("en-US", EUR, USD), { currency: "USD", symbol: "$", links: USD });
 eq("select eur non-us", D.selectLinks("en-GB", EUR, USD).currency, "EUR");
 eq("select eur if usd incomplete", D.selectLinks("en-US", EUR, { small: "u1", medium: "", large: "u3" }).currency, "EUR");
+eq("select usd without custom", D.selectLinks("en-US", EUR, { small: "u1", medium: "u2", large: "u3", custom: "" }).currency, "USD");
 eq("select eur if usd empty", D.selectLinks("en-US", EUR, { small: "", medium: "", large: "" }).symbol, "€");
 
 // ---- MeterValidate: settings

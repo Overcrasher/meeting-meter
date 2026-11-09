@@ -42,6 +42,8 @@ h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: v
 .donate-row .donate, .donate-row button, .donate-row a { font: inherit; font-weight: 600; font-size: 13px; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--navy); cursor: pointer; text-decoration: none; }
 .donate-row .emphasized { background: var(--amber); border-color: var(--amber); color: var(--navy); }
 @media (prefers-color-scheme: dark) { .donate-row .donate { color: #F8FAFC; } .donate-row .emphasized { color: var(--navy); } }
+.donate-row .custom { flex: 1 0 100%; font-weight: 500; }
+.banner .note { margin: 0 0 6px; font-size: 12px; color: var(--muted); }
 .banner-foot { display: flex; gap: 14px; }
 .small-link { border: 0; background: none; padding: 2px 0; font: inherit; font-size: 12px; color: var(--muted); text-decoration: underline; cursor: pointer; }
 .foot { margin-top: 12px; text-align: center; }

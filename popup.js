@@ -61,7 +61,7 @@ async function maybeShowBanner() {
   await chrome.storage.local.set({ donation: next });
   $("banner-text").textContent = "You've tracked " + state.meetingsTracked +
     " meetings with Meeting Meter. Built by one developer, no ads, no tracking. If this helped, a coffee keeps it going.";
-  renderDonateButtons($("banner-buttons"));
+  renderDonateButtons($("banner-buttons"), $("banner-note"));
   $("banner").hidden = false;
 }
 

@@ -63,4 +63,5 @@ button { font: inherit; cursor: pointer; }
 .donate-row .donate, .donate-row button, .donate-row a { font-weight: 600; font-size: 13px; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--navy); text-decoration: none; }
 .donate-row .emphasized { background: var(--amber); border-color: var(--amber); color: var(--navy); }
 @media (prefers-color-scheme: dark) { .donate-row .donate { color: #F8FAFC; } .donate-row .emphasized { color: var(--navy); } }
+.donate-row .custom { flex: 1 0 100%; font-weight: 500; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

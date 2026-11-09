@@ -4,7 +4,7 @@
 Fails (exit 1) if a donation link is not an https://buy.stripe.com/ or https://donate.stripe.com/ link, looks like a
 test-mode / placeholder link, THANKS_URL is not the expected thanks page, the manifest lacks the matching thanks
 content-script match, or lib/validate.js does not contain the same thanks URL.
-With --release the three EUR links (small, medium, large) must also be set.
+With --release the four EUR links (small, medium, large, custom) must also be set.
 """
 import json, os, re, sys
 
@@ -12,7 +12,7 @@ import json, os, re, sys
 ALLOWED_ORIGINS = ("https://buy.stripe.com", "https://donate.stripe.com")
 EXPECTED_THANKS = "https://overcrasher.github.io/meeting-meter/thanks.html"
 EXPECTED_MATCH = EXPECTED_THANKS + "?session_id=*"
-KEYS = ("small", "medium", "large")
+KEYS = ("small", "medium", "large", "custom")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 release = "--release" in sys.argv
 errors = []
