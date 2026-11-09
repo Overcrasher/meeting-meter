@@ -3,7 +3,12 @@
 // medium = EUR 5 (emphasized), large = EUR 10, custom = EUR 1 product with adjustable quantity
 // (the "Pick your own amount" button).
 // An empty string hides that button; if no link is set at all the popup never shows the ask.
-export const DONATE_LINKS = { small: "", medium: "", large: "", custom: "" };
+export const DONATE_LINKS = {
+  small: "https://donate.stripe.com/fZu00k6FNduA4Vset8fbq04",
+  medium: "https://donate.stripe.com/fZu4gAaW3fCIbjQdp4fbq05",
+  large: "https://donate.stripe.com/eVq5kE3tB1LS2Nk0Cifbq06",
+  custom: "https://donate.stripe.com/eVqdRa5BJ4Y4cnUet8fbq07",
+};
 
 // Optional USD set (same four links created in USD: $3 / $5 / $10 / $1 x quantity). Used only if small, medium AND large
 // are all non-empty AND the browser language is a US locale (region US or PR, e.g. en-US, es-US).
