@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Meeting Meter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A live cost ticker for Google Meet calls and cost estimates in Google Calendar. See what your meetings really cost.",
   "permissions": ["storage"],
   "host_permissions": ["https://meet.google.com/*", "https://calendar.google.com/*"],

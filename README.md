@@ -117,6 +117,13 @@ Meeting Meter is a convenience tool, not a security control.
 - Permissions: `storage`; host access to `https://meet.google.com/*` and `https://calendar.google.com/*`. Clipboard
   writes use `navigator.clipboard.writeText` inside the Share click (a user gesture), so no `clipboardWrite`.
 
+## Sharing and links
+
+The Share button copies a line like `This meeting cost €187 and 42 minutes 🙃 #MeetingMeter <store link>`; the Chrome Web Store
+link (`MeterCalc.STORE_URL` in `lib/meter.js`) is appended automatically.
+
+More from the same developer: [Wait 24h](%s), a pause before impulse buys.
+
 ## Before publishing
 
 1. Fill the four EUR links in `config.js`.
@@ -129,3 +136,8 @@ Meeting Meter is a convenience tool, not a security control.
 5. Upload the zip in the Chrome Web Store dashboard; use the GitHub Pages homepage as the website and `privacy.html` as the privacy policy.
 
 See `PRIVACY.md`: no data leaves the device.
+
+## Changes in 1.0.1
+
+- The share text now ends with the Chrome Web Store link.
+- Options page: rate link and a link to Wait 24h (only those two exact URLs can be opened).

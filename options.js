@@ -1,6 +1,15 @@
 import { getAll, mutate, DEFAULT_SETTINGS, CURRENCIES, formatMoney } from "./lib/store.js";
 import { renderDonateButtons } from "./lib/support.js";
 
+const ALLOWED_LINKS = [globalThis.MeterCalc.STORE_URL, "https://chromewebstore.google.com/detail/wait-24h/pkgdjohoemjkejcbfbkfobbbjcpdabme"];
+function bindLink(id, url) {
+  $(id).href = url;
+  $(id).addEventListener("click", (e) => {
+    e.preventDefault();
+    if (ALLOWED_LINKS.includes(url)) chrome.tabs.create({ url });
+  });
+}
+
 const $ = (id) => document.getElementById(id);
 const SALARY_MIN = 1, SALARY_MAX = 10000000, MIN_P = 1, MAX_P = 50;
 let settings;
@@ -58,6 +67,8 @@ function disarmClear() {
 }
 
 async function init() {
+  bindLink("rate-link", globalThis.MeterCalc.STORE_URL);
+  bindLink("wait24-link", "https://chromewebstore.google.com/detail/wait-24h/pkgdjohoemjkejcbfbkfobbbjcpdabme");
   const state = await getAll();
   settings = Object.assign({}, DEFAULT_SETTINGS, state.settings);
 

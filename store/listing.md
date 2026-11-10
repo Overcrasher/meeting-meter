@@ -28,7 +28,7 @@ Do not list or repeat brand names in the public description or short description
 Meeting Meter shows what your meetings cost, in plain numbers, while they happen.
 
 LIVE TICKER IN YOUR VIDEO CALL
-A small ticker shows "This meeting has cost €123.45" and updates every second. It follows people joining and leaving, so the number stays honest. Drag it anywhere, minimize it, or press Share to copy a one-line summary.
+A small ticker shows "This meeting has cost €123.45" and updates every second. It follows people joining and leaving, so the number stays honest. Drag it anywhere, minimize it, or press Share to copy a one-line summary (with a link to the extension).
 
 ESTIMATE ON YOUR CALENDAR
 Open an event and you see a line like "Estimated cost: €240 · 6 people × 2 h": guests × duration × the hourly rate.
