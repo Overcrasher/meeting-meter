@@ -17,7 +17,14 @@ p,li{color:var(--muted)}
 .hero{background:var(--navy);color:#faf7f0;border-radius:24px;padding:40px 24px;text-align:center;box-shadow:var(--shadow)}
 .hero h1{color:#faf7f0}.hero p{color:#cdd3e2;max-width:540px;margin:8px auto}
 .tag{font-size:20px;color:var(--amber)!important;font-weight:600}
-.money{font-variant-numeric:tabular-nums;color:var(--amber);font-size:34px;font-weight:700;margin:16px 0 0!important}
+.money{font-variant-numeric:tabular-nums;color:var(--amber);font-size:34px;font-weight:700;margin:16px auto 0!important}
+.cta{margin:24px auto 0!important}
+.btn{display:inline-block;background:var(--amber);color:#14213d;font-weight:700;font-size:18px;line-height:1.3;text-decoration:none;padding:14px 28px;border-radius:999px;box-shadow:var(--shadow)}
+.btn:hover{filter:brightness(1.08)}.btn:focus-visible{outline:2px solid #faf7f0;outline-offset:3px}
+.btn.sm{font-size:16px;padding:10px 22px}
+.free{margin:8px auto 0!important;font-size:14px}
+.dev{font-size:14px}
+@media(max-width:480px){h1{font-size:32px}.hero{padding:32px 16px}.btn{display:block;padding:14px 16px}}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;box-shadow:var(--shadow);margin:0 0 12px}
 .card strong{display:block;color:var(--fg)}
 footer{max-width:720px;margin:0 auto;padding:16px 16px 48px;border-top:1px solid var(--line);font-size:14px;text-align:center}footer a{margin:0 8px;display:inline-block}
@@ -31,7 +38,8 @@ footer{max-width:720px;margin:0 auto;padding:16px 16px 48px;border-top:1px solid
     <p class="tag">See what your meetings really cost</p>
     <p class="money" aria-hidden="true">€123.45</p>
     <p>A free Chrome extension that turns time into money. A small ticker shows the running cost of the call you are in, and calendar events show an estimated cost before you accept them.</p>
-    <!-- TODO: add the "Add to Chrome" link here once the Chrome Web Store listing is live. -->
+    <p class="cta"><a class="btn" href="https://chromewebstore.google.com/detail/meeting-meter/ffkniocclnaojfdcoofnjkfnihnpgnlb" target="_blank" rel="noopener">Add to Chrome — it's free</a></p>
+    <p class="free">Free, no ads, no accounts. Works in Chrome.</p>
   </header>
 
   <section>
@@ -51,6 +59,13 @@ footer{max-width:720px;margin:0 auto;padding:16px 16px 48px;border-top:1px solid
   <section>
     <h2>Private by design</h2>
     <p>Everything stays on your device in the browser's local extension storage. There are no ads, no analytics, no accounts, and the extension sends nothing to any server. Meeting titles are stored only if you turn that on. Read the <a href="privacy.html">privacy policy</a>, or check the <a href="https://github.com/Overcrasher/meeting-meter">source code</a> yourself.</p>
+  </section>
+
+  <section>
+    <h2>Install</h2>
+    <p>Get Meeting Meter from the Chrome Web Store. It takes a few seconds.</p>
+    <p class="cta"><a class="btn sm" href="https://chromewebstore.google.com/detail/meeting-meter/ffkniocclnaojfdcoofnjkfnihnpgnlb" target="_blank" rel="noopener">Add to Chrome — it's free</a></p>
+    <p class="dev">Developers can also <a href="https://github.com/Overcrasher/meeting-meter" rel="noopener">load the source unpacked</a> from GitHub.</p>
   </section>
 
   <section>

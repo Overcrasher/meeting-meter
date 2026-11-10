@@ -1,14 +1,19 @@
 # Meeting Meter
 
+**Install:** [Chrome Web Store](https://chromewebstore.google.com/detail/meeting-meter/ffkniocclnaojfdcoofnjkfnihnpgnlb)
+
 A Manifest V3 Chrome extension that shows what meetings cost. In **Google Meet** a small draggable ticker shows
 "This meeting has cost €123.45", updating every second. In **Google Calendar**, an open event shows
 "Estimated cost: €X". The popup summarises the week. Plain JavaScript, no build step, no libraries, no network requests.
 
-## Load it unpacked
+## Install
 
-1. Open `chrome://extensions`, enable **Developer mode**.
-2. Click **Load unpacked** and pick this `meeting-meter` folder.
-3. Open Options and set your yearly salary and currency, then join a Meet call.
+1. **Recommended:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/meeting-meter/ffkniocclnaojfdcoofnjkfnihnpgnlb).
+2. For development, load it unpacked:
+
+   1. Open `chrome://extensions`, enable **Developer mode**.
+   2. Click **Load unpacked** and pick this `meeting-meter` folder.
+   3. Open Options and set your yearly salary and currency, then join a Meet call.
 
 ## How costs are computed
 
