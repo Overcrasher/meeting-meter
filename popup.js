@@ -4,9 +4,12 @@ import { renderDonateButtons, hasDonateLinks } from "./lib/support.js";
 const $ = (id) => document.getElementById(id);
 const M = globalThis.MeterCalc;
 const D = globalThis.MeterDonation;
+const R = globalThis.MeterRating;
+const REVIEWS_URL = M.STORE_URL + "/reviews";
 const LIVE_MS = 30000;
 let state = null;
 let bannerShown = false;
+let ratingShown = false;
 
 function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
 
@@ -49,7 +52,7 @@ function render() {
 }
 
 async function maybeShowBanner() {
-  if (bannerShown || state.supporter) return;
+  if (bannerShown || ratingShown || state.supporter) return;
   const now = Date.now();
   const dstate = Object.assign({}, state.donation, { supporter: state.supporter });
   const milestone = D.pickAsk(dstate, state.meetingsTracked, now);
@@ -65,10 +68,22 @@ async function maybeShowBanner() {
   $("banner").hidden = false;
 }
 
+// One-time, quieter than the donation banner, and never in the same render as it.
+async function maybeShowRating() {
+  if (ratingShown || bannerShown) return;
+  if (!R.shouldAskRating(state.rating, state.meetingsTracked, R.RATING_THRESHOLD)) return;
+  ratingShown = true;
+  const rating = { shown: true, at: Date.now() };
+  state.rating = rating;
+  await chrome.storage.local.set({ rating });
+  $("rating").hidden = false;
+}
+
 async function refresh() {
   state = await getAll();
   render();
   await maybeShowBanner();
+  await maybeShowRating();
 }
 
 function init() {
@@ -80,6 +95,8 @@ function init() {
     await chrome.storage.local.set({ donation });
     $("banner").hidden = true;
   });
+  $("rating-go").addEventListener("click", () => { chrome.tabs.create({ url: REVIEWS_URL }); $("rating").hidden = true; });
+  $("rating-no").addEventListener("click", () => { $("rating").hidden = true; });
   $("optionsLink").addEventListener("click", () => { chrome.runtime.openOptionsPage(); window.close(); });
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === "local") refresh();

@@ -35,9 +35,9 @@ All calculations are pure functions in `lib/meter.js` (`globalThis.MeterCalc`).
 | `selectors.js` | ALL Google DOM selectors (`globalThis.MeterSelectors`) |
 | `meet.js`, `calendar.js` | Content scripts (ticker, calendar estimate) |
 | `thanks.js` | Marks the user as a supporter on the thank-you page |
-| `lib/meter.js`, `lib/validate.js`, `lib/donation.js` | Classic scripts: calculations, validation, donation rules |
+| `lib/meter.js`, `lib/validate.js`, `lib/donation.js`, `lib/rating.js` | Classic scripts: calculations, validation, donation and rating rules |
 | `lib/store.js`, `lib/support.js` | ES modules for extension pages: storage helpers, donate buttons |
-| `popup.*`, `options.*` | Extension pages |
+| `popup.*`, `options.*`, `welcome.*` | Extension pages (`welcome.html` opens once, on first install) |
 | `icons/`, `tools/make_icons.py` | Icons and the stdlib generator |
 | `tools/check_release.py`, `tools/package.py` | Release checks and zip builder |
 | `docs/` | GitHub Pages site: homepage, thank-you and privacy pages |
@@ -141,3 +141,5 @@ See `PRIVACY.md`: no data leaves the device.
 
 - The share text now ends with the Chrome Web Store link.
 - Options page: rate link and a link to Wait 24h (only those two exact URLs can be opened).
+- One-time rating card in the popup after the 5th tracked meeting (never together with the donation banner, never again once shown).
+- Welcome page on first install: three steps to try it, privacy note, "Open settings" button and a pin hint (not shown on updates).

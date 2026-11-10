@@ -11,9 +11,9 @@ import zipfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOP_FILES = [
     "manifest.json", "config.js", "background.js", "thanks.js", "selectors.js", "meet.js", "calendar.js",
-    "popup.html", "popup.css", "popup.js", "options.html", "options.css", "options.js",
+    "welcome.html", "welcome.css", "welcome.js", "popup.html", "popup.css", "popup.js", "options.html", "options.css", "options.js",
 ]
-RUNTIME_LIB = ["lib/meter.js", "lib/validate.js", "lib/donation.js", "lib/store.js", "lib/support.js"]
+RUNTIME_LIB = ["lib/meter.js", "lib/validate.js", "lib/donation.js", "lib/store.js", "lib/support.js", "lib/rating.js"]
 
 
 def fail(msg):

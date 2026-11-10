@@ -1,6 +1,7 @@
 // Run from the meeting-meter folder:  jsc tests/run.js
 load("lib/meter.js");
 load("lib/donation.js");
+load("lib/rating.js");
 load("lib/validate.js");
 load("selectors.js");
 
@@ -405,6 +406,24 @@ eq("sweep ended uncounted old dropped", V.sweepMeetings([sw({ end: SN - RT - 1, 
 eq("sweep ended counted old kept", V.sweepMeetings([sw({ end: 1, counted: true })], SN, undefined, ST, RT).length, 1);
 eq("sweep keepId protected", V.sweepMeetings([sw({ end: 1, counted: false })], SN, "a1", ST, RT).length, 1);
 eq("weekStats ignores uncounted ended", C.weekStats([mk({ counted: false })], NOW).count, 0);
+
+// ---- rating prompt
+const RT5 = MeterRating.RATING_THRESHOLD;
+eq("rating threshold is 5", RT5, 5);
+eq("rating below threshold", MeterRating.shouldAskRating(undefined, 4, 5), false);
+eq("rating at threshold", MeterRating.shouldAskRating(undefined, 5, 5), true);
+eq("rating above threshold", MeterRating.shouldAskRating({ shown: false, at: 0 }, 99, 5), true);
+eq("rating already shown", MeterRating.shouldAskRating({ shown: true, at: 5 }, 99, 5), false);
+eq("rating malformed string state", MeterRating.shouldAskRating("shown", 5, 5), true);
+eq("rating null state", MeterRating.shouldAskRating(null, 5, 5), true);
+eq("rating NaN count", MeterRating.shouldAskRating(undefined, NaN, 5), false);
+eq("rating string count", MeterRating.shouldAskRating(undefined, "9", 5), false);
+eq("rating bad threshold", MeterRating.shouldAskRating(undefined, 9, undefined), false);
+eq("sanitizeRating undefined", V.sanitizeRating(undefined), { shown: false, at: 0 });
+eq("sanitizeRating good", V.sanitizeRating({ shown: true, at: 123 }), { shown: true, at: 123 });
+eq("sanitizeRating junk", V.sanitizeRating({ shown: "yes", at: "x" }), { shown: false, at: 0 });
+eq("sanitizeRating bad at", V.sanitizeRating({ shown: true, at: -4 }), { shown: true, at: 0 });
+eq("sanitizeRating array", V.sanitizeRating([1]), { shown: false, at: 0 });
 
 print("passed " + pass + ", failed " + fail);
 failures.forEach((f) => print("FAIL " + f));

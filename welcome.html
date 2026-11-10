@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome to Meeting Meter</title>
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main>
+    <header class="top">
+      <img class="mark" src="icons/icon128.png" width="56" height="56" alt="">
+      <div>
+        <h1>Welcome to Meeting Meter</h1>
+        <p class="promise">See what your meetings cost, live, while you are in them.</p>
+      </div>
+    </header>
+
+    <section class="card" aria-labelledby="try">
+      <h2 id="try">Try it now</h2>
+      <ol class="steps">
+        <li><span class="n" aria-hidden="true">1</span><span>Join a Google Meet call with at least one other person. The ticker appears in the corner.</span></li>
+        <li><span class="n" aria-hidden="true">2</span><span>Open an event in Google Calendar to see its estimated cost.</span></li>
+        <li><span class="n" aria-hidden="true">3</span><span>Set your salary and currency in settings (default €40,000 a year).</span></li>
+      </ol>
+      <div class="actions">
+        <button id="open-settings" type="button" class="primary">Open settings</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="good">
+      <h2 id="good">Good to know</h2>
+      <ul class="notes">
+        <li>A meeting counts after 1 minute with 2 or more people. The ticker hides below 2 people by default.</li>
+        <li>Everything stays on this device. No account, no analytics, no servers.</li>
+      </ul>
+    </section>
+
+    <p class="pin">Pin it: click the puzzle icon in the toolbar, then the pin.</p>
+  </main>
+  <script src="welcome.js"></script>
+</body>
+</html>

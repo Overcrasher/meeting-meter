@@ -27,7 +27,11 @@ async function sweep() {
   });
 }
 
-chrome.runtime.onInstalled.addListener(() => { lockStorage(); sweep(); });
+chrome.runtime.onInstalled.addListener((details) => {
+  lockStorage(); sweep();
+  // Welcome page on a fresh install only, never on update/browser update.
+  if (details && details.reason === "install") chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
+});
 chrome.runtime.onStartup.addListener(() => { lockStorage(); sweep(); });
 
 // ---- state pushed to content scripts ----

@@ -1,0 +1,31 @@
+:root {
+  --navy: #14213D; --amber: #F5A524; --bg: #FAF7F0; --text: #334155; --muted: #64748B;
+  --card: #FFFFFF; --border: #E7E2D6; --focus: #2563EB; --amber-soft: #FDF1D8;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0E1626; --text: #CBD5E1; --muted: #94A3B8; --card: #17233D; --border: #26344F; --focus: #60A5FA; --amber-soft: #2B2A2A; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font); }
+main { max-width: 600px; margin: 0 auto; padding: 40px 16px 56px; }
+h1, h2, p { margin: 0; }
+h1 { font-size: 26px; color: var(--navy); font-weight: 700; letter-spacing: -.01em; line-height: 1.2; }
+@media (prefers-color-scheme: dark) { h1 { color: #F8FAFC; } }
+.top { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.mark { border-radius: 14px; flex: none; }
+.promise { color: var(--muted); margin-top: 4px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
+.steps { list-style: none; margin: 0; padding: 0; }
+.steps li { display: flex; gap: 12px; align-items: flex-start; margin: 10px 0; }
+.n { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: var(--amber); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+@media (prefers-color-scheme: dark) { .n { background: var(--amber); color: var(--navy); } }
+.notes { margin: 0; padding-left: 20px; }
+.notes li { margin: 6px 0; }
+.actions { margin-top: 16px; }
+.primary { font: inherit; font-weight: 600; cursor: pointer; padding: 9px 16px; border-radius: 10px; border: 1px solid var(--amber); background: var(--amber); color: var(--navy); }
+.primary:hover { filter: brightness(.96); }
+.pin { color: var(--muted); font-size: 13px; text-align: center; margin-top: 18px; }
+button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (max-width: 420px) { h1 { font-size: 22px; } .top { gap: 12px; } main { padding-top: 24px; } }
