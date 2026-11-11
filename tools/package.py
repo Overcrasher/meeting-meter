@@ -28,6 +28,12 @@ def collect():
         for name in os.listdir(d):
             if name.endswith(".png") and os.path.isfile(os.path.join(d, name)):
                 files.append("icons/" + name)
+    loc = os.path.join(ROOT, "_locales")
+    if os.path.isdir(loc):
+        for lang in os.listdir(loc):
+            mf = os.path.join(loc, lang, "messages.json")
+            if os.path.isfile(mf):
+                files.append("_locales/%s/messages.json" % lang)
     return sorted(set(files), key=lambda p: (p != "manifest.json", p))
 
 
@@ -72,6 +78,16 @@ def main():
             fail("release check failed; not packaging (use --skip-release-check for test builds)")
 
     files = collect()
+    dl = manifest.get("default_locale")
+    if dl and "_locales/%s/messages.json" % dl not in files:
+        fail("default_locale %r has no _locales/%s/messages.json" % (dl, dl))
+    used = set(re.findall(r"__MSG_(\w+)__", json.dumps(manifest)))
+    for f in files:
+        if f.startswith("_locales/"):
+            with open(os.path.join(ROOT, f), encoding="utf-8") as fh:
+                defined = json.load(fh)
+            for k in sorted(used - set(defined)):
+                fail("%s does not define message %s used in manifest.json" % (f, k))
     inzip = set(files)
     missing = []
     for f in TOP_FILES + RUNTIME_LIB:

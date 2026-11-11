@@ -105,10 +105,11 @@ eq("money en usd", C.formatMoney(5, "USD", false, "en-US"), "$5.00");
 eq("money gbp", C.formatMoney(1234.5, "GBP", false, "en"), "£1,234.50");
 eq("money bad currency fallback", C.formatMoney(5, "??", false, "en"), "5.00 ??");
 eq("money bad currency whole fallback", C.formatMoney(5.4, "??", true, "en"), "5 ??");
-eq("share basic", C.shareText(187, "EUR", 42 * 60, "en"), "This meeting cost €187 and 42 minutes 🙃 #MeetingMeter " + C.STORE_URL);
-eq("share rounds cost", C.shareText(187.6, "EUR", 3600, "en"), "This meeting cost €188 and 1 hour 🙃 #MeetingMeter " + C.STORE_URL);
+eq("share basic", C.shareText(187, "EUR", 42 * 60, "en"), "This meeting cost €187 and 42 minutes 🙃 #MeetingMeter " + C.STORE_URL + "?utm_source=share");
+eq("share rounds cost", C.shareText(187.6, "EUR", 3600, "en"), "This meeting cost €188 and 1 hour 🙃 #MeetingMeter " + C.STORE_URL + "?utm_source=share");
+eq("share url exact", C.SHARE_URL, C.STORE_URL + "?utm_source=share");
 eq("store url exact", C.STORE_URL, "https://chromewebstore.google.com/detail/meeting-meter/ffkniocclnaojfdcoofnjkfnihnpgnlb");
-eq("share short", C.shareText(3, "USD", 30, "en"), "This meeting cost $3 and less than a minute 🙃 #MeetingMeter " + C.STORE_URL);
+eq("share short", C.shareText(3, "USD", 30, "en"), "This meeting cost $3 and less than a minute 🙃 #MeetingMeter " + C.STORE_URL + "?utm_source=share");
 
 // ---- parseTimeRange
 const R = (t) => C.parseTimeRange(t);

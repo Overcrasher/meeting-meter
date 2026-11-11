@@ -83,6 +83,37 @@ if manifest:
 if validate is not None and EXPECTED_THANKS not in validate:
     errors.append("lib/validate.js: does not contain thanks URL %r" % EXPECTED_THANKS)
 
+# Localized store name / summary (Chrome Web Store reads them from manifest.json via _locales).
+LOCALES = ("en", "ro", "de", "fr", "es")
+NAME_MAX, DESC_MAX = 75, 132
+if manifest:
+    if manifest.get("default_locale") != "en":
+        errors.append("manifest.json: default_locale must be 'en'")
+    for key in ("name", "description"):
+        if manifest.get(key) != "__MSG_ext%s__" % key.capitalize():
+            errors.append("manifest.json: %s must be __MSG_ext%s__" % (key, key.capitalize()))
+    if manifest.get("short_name") != "Meeting Meter":
+        errors.append("manifest.json: short_name must be 'Meeting Meter'")
+    if manifest.get("action", {}).get("default_title") != "Meeting Meter":
+        errors.append("manifest.json: action.default_title must be 'Meeting Meter'")
+    for loc in LOCALES:
+        txt = read("_locales/%s/messages.json" % loc)
+        if txt is None:
+            continue
+        try:
+            msgs = json.loads(txt)
+        except ValueError as e:
+            errors.append("_locales/%s/messages.json: invalid JSON (%s)" % (loc, e))
+            continue
+        if sorted(msgs) != ["extDescription", "extName"]:
+            errors.append("_locales/%s/messages.json: must define exactly extName and extDescription (got %s)" % (loc, sorted(msgs)))
+        for key, limit in (("extName", NAME_MAX), ("extDescription", DESC_MAX)):
+            val = msgs.get(key, {}).get("message", "")
+            if not val:
+                errors.append("_locales/%s: %s is empty" % (loc, key))
+            elif len(val) > limit:
+                errors.append("_locales/%s: %s is %d chars (max %d)" % (loc, key, len(val), limit))
+
 if errors:
     print("check_release: FAILED")
     for e in errors:

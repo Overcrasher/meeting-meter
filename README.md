@@ -120,7 +120,7 @@ Meeting Meter is a convenience tool, not a security control.
 ## Sharing and links
 
 The Share button copies a line like `This meeting cost €187 and 42 minutes 🙃 #MeetingMeter <store link>`; the Chrome Web Store
-link (`MeterCalc.STORE_URL` in `lib/meter.js`) is appended automatically.
+link with `?utm_source=share` (`MeterCalc.SHARE_URL` in `lib/meter.js`; `STORE_URL` stays clean) is appended automatically.
 
 More from the same developer: [Wait 24h](%s), a pause before impulse buys.
 
@@ -136,6 +136,13 @@ More from the same developer: [Wait 24h](%s), a pause before impulse buys.
 5. Upload the zip in the Chrome Web Store dashboard; use the GitHub Pages homepage as the website and `privacy.html` as the privacy policy.
 
 See `PRIVACY.md`: no data leaves the device.
+
+## Changes in 1.0.2
+
+- Store name with a search term and a rewritten short summary, taken from `manifest.json` via `_locales` (`__MSG_extName__`, `__MSG_extDescription__`).
+- Five store languages: English, Romanian, German, French, Spanish (`_locales/*/messages.json`; only the store listing name and summary are localized, the in-product UI stays English).
+- The toolbar tooltip and in-product headers keep the short name "Meeting Meter" (`short_name`, `action.default_title`).
+- The Share text now ends with a trackable link: `<store link>?utm_source=share`.
 
 ## Changes in 1.0.1
 
