@@ -139,6 +139,9 @@ See `PRIVACY.md`: no data leaves the device.
 
 ## Changes in 1.0.2
 
+- Google Meet fix: the participant count is now read from the People button (`[data-avatar-count]` plus its digit), with the old icon badge, the open panel rows and the distinct tile ids as fallbacks (largest wins). The old panel detection could swallow the video tiles, which hid the ticker on the real page.
+- The People-panel fallback counts only rows with a participant id, so invited-but-absent people are never counted. The ticker's default corner now follows the video area, so it sits beside an open Chat/People panel instead of covering it (a dragged position is never moved).
+- Meet links of the form `meet.google.com/meet/abc-defg-hij` are recognised (as well as `/abc-defg-hij`).
 - Store name with a search term and a rewritten short summary, taken from `manifest.json` via `_locales` (`__MSG_extName__`, `__MSG_extDescription__`).
 - Five store languages: English, Romanian, German, French, Spanish (`_locales/*/messages.json`; only the store listing name and summary are localized, the in-product UI stays English).
 - The toolbar tooltip and in-product headers keep the short name "Meeting Meter" (`short_name`, `action.default_title`).

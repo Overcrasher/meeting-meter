@@ -61,7 +61,7 @@
   // ---------- Meet ----------
   const ICON_SEL = ".google-symbols, .material-icons, .material-icons-extended, .material-symbols-outlined, .material-symbols-rounded, .google-material-icons";
   const IN_CALL_ONLY = ["chat", "closed_caption_off", "closed_caption", "translate_cc", "present_to_all", "back_hand", "mood"];
-  const CODE_PATH = /^\/[a-z]{3}-[a-z]{4}-[a-z]{3}(?:$|[/?#])/;
+  const CODE_PATH = /^\/(?:meet\/)?[a-z]{3}-[a-z]{4}-[a-z]{3}(?:$|[/?#])/;
 
   function iconSet(doc) {
     const set = new Set();
@@ -92,10 +92,14 @@
   }
   const meetInCall = (doc, loc) => meetInCallVia(doc, loc) !== null;
 
-  // Root of the open People panel (null when closed / unknown).
+  // Open People panel: a container that really holds [role=listitem] rows carrying data-participant-id
+  // (never just any tabpanel / data-panel-id wrapper, which can also contain the video tiles).
   function peoplePanel(doc) {
     try {
-      return doc.querySelector('[data-panel-id="1"]') || doc.querySelector('[role="tabpanel"]') || null;
+      const rows = doc.querySelectorAll('[role="listitem"][data-participant-id]');
+      if (!rows.length) return null;
+      const list = rows[0].closest('[role="list"]');
+      return list || rows[0].parentElement;
     } catch (e) { return null; }
   }
 
@@ -103,16 +107,35 @@
     const panel = peoplePanel(doc);
     if (!panel) return null;
     const ids = new Set();
-    for (const row of panel.querySelectorAll('[role="listitem"]')) {
-      const id = row.getAttribute("data-participant-id") || row.getAttribute("aria-label");
-      if (id) ids.add(id);
-    }
+    for (const row of panel.querySelectorAll('[role="listitem"][data-participant-id]')) ids.add(row.getAttribute("data-participant-id"));
     return ids.size || null;
+  }
+
+  // People button: a button containing [data-avatar-count]. The digits-only leaf is the total; the attribute
+  // alone (the avatar stack may be capped) is only a lower bound. Returns {total, lower} (either may be null).
+  function peopleButton(doc) {
+    let best = null;
+    for (const av of doc.querySelectorAll("[data-avatar-count]")) {
+      const btn = av.closest('button, [role="button"]');
+      if (!btn) continue;
+      const pop = btn.getAttribute("aria-haspopup") === "dialog";
+      if (!best || (pop && !best.pop)) best = { btn, av, pop };
+    }
+    if (!best) return null;
+    let total = null;
+    for (const el of best.btn.querySelectorAll("*")) {
+      if (el.children.length) continue;
+      const n = badgeNumber(el.textContent);
+      if (n) { total = n; break; }
+    }
+    const a = parseInt(best.av.getAttribute("data-avatar-count"), 10);
+    return { total, lower: a >= 1 ? a : null };
   }
 
   function countBadge(doc) {
     for (const ic of doc.querySelectorAll(ICON_SEL)) {
-      if ((ic.textContent || "").trim() !== "people") continue;
+      const t = (ic.textContent || "").trim();
+      if (t !== "people" && t !== "group" && t !== "groups") continue;
       const btn = ic.closest('button, [role="button"]');
       if (!btn) continue;
       for (const scope of [btn, btn.parentElement]) {
@@ -127,23 +150,26 @@
     return null;
   }
 
+  // Tiles and panel rows share ids, so a distinct set over the whole document needs no exclusion.
   function countTiles(doc) {
-    const panel = peoplePanel(doc);
     const ids = new Set();
-    for (const el of doc.querySelectorAll("[data-participant-id]")) {
-      if (panel && panel.contains(el)) continue;
-      ids.add(el.getAttribute("data-participant-id"));
-    }
+    for (const el of doc.querySelectorAll("[data-participant-id]")) ids.add(el.getAttribute("data-participant-id"));
     return ids.size || null;
   }
 
-  // Never opens the people panel. Returns an integer >= 1 or null.
-  function meetParticipantCount(doc) {
-    for (const f of [countPanelRows, countBadge, countTiles]) {
-      try { const n = f(doc); if (n) return n; } catch (e) { /* next strategy */ }
-    }
-    return null;
+  // Never opens anything. {count, via} where via is "button" | "badge" | "panel" | "tiles" | "button-lower" or null.
+  // The people-button digit wins; otherwise the largest of badge / panel rows / tiles / avatar lower bound.
+  function meetParticipantInfo(doc) {
+    const safe = (f) => { try { return f(doc); } catch (e) { return null; } };
+    const pb = safe(peopleButton);
+    if (pb && pb.total) return { count: pb.total, via: "button" };
+    const cands = [["badge", safe(countBadge)], ["panel", safe(countPanelRows)], ["tiles", safe(countTiles)],
+      ["button-lower", pb && pb.lower]];
+    let best = null;
+    for (const [via, n] of cands) if (n && (!best || n > best.count)) best = { count: n, via };
+    return best || { count: null, via: null };
   }
+  const meetParticipantCount = (doc) => meetParticipantInfo(doc).count;
 
   function meetTitle(doc) {
     try {
@@ -253,7 +279,7 @@
   root.MeterSelectors = {
     // pure helpers
     normalizeTimeText, cleanMeetTitle, guestId, guestSummary, badgeNumber, hasTimeRange,
-    meet: { inCall: meetInCall, inCallVia: meetInCallVia, participantCount: meetParticipantCount, title: meetTitle },
+    meet: { inCall: meetInCall, inCallVia: meetInCallVia, participantCount: meetParticipantCount, participantInfo: meetParticipantInfo, title: meetTitle },
     calendar: { dialog: calendarDialog, timeElement, guestCount: calendarGuestCount, unreadableDialog: calendarUnreadableDialog },
   };
 })(globalThis);

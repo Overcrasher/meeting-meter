@@ -144,6 +144,7 @@
 
   // ---------- ticker ----------
   let host = null, shadow = null, els = null, collapsed = false;
+  let dragActive = false, lastL = null, lastT = null;
 
   const HOST_STYLE = "all: initial !important; position: fixed !important; z-index: 2147483647 !important; " +
     "display: block !important; width: max-content !important; height: auto !important; margin: 0 !important; padding: 0 !important; " +
@@ -231,13 +232,13 @@
     pill.addEventListener("pointermove", (ev) => {
       if (!drag) return;
       if (!drag.moved && Math.abs(ev.clientX - drag.sx) + Math.abs(ev.clientY - drag.sy) < 4) return;
-      drag.moved = true;
+      drag.moved = true; dragActive = true;
       pill.classList.add("dragging");
       place(ev.clientX - drag.dx, ev.clientY - drag.dy);
     });
     const finish = (ev) => {
       if (!drag) return;
-      const d = drag; drag = null;
+      const d = drag; drag = null; dragActive = false;
       pill.classList.remove("dragging");
       try { pill.releasePointerCapture(ev.pointerId); } catch (e) { /* ignore */ }
       if (d.moved) {
@@ -254,11 +255,33 @@
   const clamp01 = (n) => Math.max(0, Math.min(1, n));
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(n, Math.max(lo, hi)));
 
-  function place(left, top) {
+  // Moves the host. `soft` keeps the previous spot when the target moved by <= 4 px (no jitter from text width changes).
+  function place(left, top, soft) {
     const w = host.offsetWidth || 200, h = host.offsetHeight || 50;
-    const l = clamp(left, 0, innerWidth - w), t = clamp(top, 0, innerHeight - h);
+    let l = clamp(left, 0, innerWidth - w), t = clamp(top, 0, innerHeight - h);
+    if (soft && lastL !== null && Math.abs(l - lastL) <= 4 && Math.abs(t - lastT) <= 4) { l = lastL; t = lastT; }
+    lastL = l; lastT = t;
     host.style.setProperty("left", l + "px", "important");
     host.style.setProperty("top", t + "px", "important");
+    host.style.setProperty("transition", dragActive ? "none" : "left .15s ease, top .15s ease", "important");
+  }
+
+  // Rectangle of the video area: union of tile-sized participant elements (not people-panel rows), clamped to the
+  // viewport. Null when it cannot be determined. Used so the default corner sits beside an open side panel.
+  function stageRect() {
+    try {
+      let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity, n = 0;
+      for (const el of document.querySelectorAll("[data-requested-participant-id], [data-participant-id]")) {
+        if (++n > 200) break;
+        if (el.closest('[role="listitem"]')) continue;
+        const q = el.getBoundingClientRect();
+        if (q.width < 120 || q.height < 90) continue;
+        l = Math.min(l, q.left); t = Math.min(t, q.top); r = Math.max(r, q.right); b = Math.max(b, q.bottom);
+      }
+      if (!isFinite(l)) return null;
+      l = Math.max(0, l); t = Math.max(0, t); r = Math.min(innerWidth, r); b = Math.min(innerHeight, b);
+      return r - l > 200 && b - t > 100 ? { left: l, top: t, right: r, bottom: b } : null;
+    } catch (e) { return null; }
   }
 
   function position() {
@@ -266,9 +289,10 @@
     const p = settings.tickerPos;
     if (p && typeof p.x === "number" && typeof p.y === "number") return place(p.x * innerWidth, p.y * innerHeight);
     const corner = String(settings.tickerCorner || "bottom-right");
-    const left = corner.endsWith("left") ? 16 : innerWidth - w - 16;
-    const top = corner.startsWith("top") ? 16 : innerHeight - h - 88;
-    place(left, top);
+    const R = stageRect() || { left: 0, top: 0, right: innerWidth, bottom: innerHeight };
+    const left = corner.endsWith("left") ? R.left + 16 : R.right - w - 16;
+    const top = corner.startsWith("top") ? R.top + 16 : Math.min(innerHeight - h - 88, R.bottom - h - 16);
+    place(left, top, true);
   }
 
   function removeTicker() {
@@ -302,7 +326,7 @@
       els.amt.textContent = C.formatMoney(C.costFor(personSeconds, rate), settings.currency);
       els.l2.textContent = lastCount + (lastCount === 1 ? " person" : " people") + " · " + clock(seconds);
       els.min.setAttribute("aria-label", "Minimize the ticker");
-      position();
+      if (!dragActive) { if (lastL !== null) { host.style.setProperty("left", lastL + "px", "important"); host.style.setProperty("top", lastT + "px", "important"); } position(); }
     } catch (e) { /* never throw */ }
   }
 
